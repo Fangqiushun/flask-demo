@@ -3,11 +3,33 @@
 # @Author : Chilson
 
 from app import create_app
+from app.utils.errors import APIException, HTTPException
+from app.utils.error_code import ServerError
 
 app = create_app()
 
+
+@app.errorhandler(Exception)
+def errorHandler(e):
+    if isinstance(e, APIException):
+        # 已知异常
+        return e
+    if isinstance(e, HTTPException):
+        # HTTP异常
+        code = e.code
+        msg = e.description
+        error_code = 1005  # 自定义
+        return APIException(msg, code, error_code)
+    else:
+        # 其他未知异常,此处需要分是生产环境还是开发环境，如果是生产环境，返回json格式的异常，如果是开发环境，我们需要详细的异常说明去分析异常原因
+        if not app.config["DEBUG"]:
+            return ServerError()
+        else:
+            raise e
+
+
 if __name__ == '__main__':
-    app.run('0.0.0.0', 80)
+    app.run('0.0.0.0', 5500)
 
 
 """

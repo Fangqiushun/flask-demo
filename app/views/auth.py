@@ -5,7 +5,7 @@
 from flask import Blueprint, request, render_template, session, redirect
 from app.utils.md5 import md5
 from app.utils.sqlhelper import fetch_one
-from app.forms import LoginForm
+from app.forms.forms import LoginForm
 
 
 au = Blueprint('auth', __name__)
@@ -15,7 +15,7 @@ au = Blueprint('auth', __name__)
 def login():
     error = ''
     if request.method == 'GET':
-        form = LoginForm()
+        form = LoginForm(None)
     else:
         # post请求验证表单
         form = LoginForm(request.form)
