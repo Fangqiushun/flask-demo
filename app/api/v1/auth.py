@@ -6,7 +6,7 @@ from flask import request
 from app.utils.greenprint import Greenprint
 from app.utils.md5 import md5
 from app.utils.sqlhelper import fetch_one
-from app.utils.error_code import Success, AuthFailed
+from app.utils.error_code import Success, AuthFailed, ServerError
 from app.forms.forms import LoginForm
 
 api = Greenprint('auth')
@@ -32,3 +32,8 @@ def login():
 @api.route('/api', methods=['POST'])
 def api():
     return Success()
+
+
+@api.route('/server_error', methods=['POST'])
+def api1():
+    return ServerError()
