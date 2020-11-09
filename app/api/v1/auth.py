@@ -27,3 +27,8 @@ def login():
         return Success()
     else:
         return AuthFailed()
+
+
+@api.route('/api', methods=['POST'])
+def api():
+    return Success()
